@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8"/>0
+    <title>citywalk专题地图</title>
+    <meta name='viewport' content='initial-scale=1,maximum-scale=1,user-scalable=no'/>
+    <link href="https://api.mapbox.com/mapbox-gl-js/v3.3.0/mapbox-gl.css" rel="stylesheet">
+    <link href="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-directions/v4.1.1/mapbox-gl-directions.css" rel="stylesheet" type='text/css'/>
+    <link rel="stylesheet" href="地图网页风格.css" type="text/css"/>
+</head>
+<body>
+    <div class="navbar">
+        <div class="navbar-title">金陵游园会</div>
+        <div class="navbar-links">
+            <button id="theme1" class="navbar-link">城市预览</button>
+            <button id="theme2" class="navbar-link">主题选择</button>
+            <button id="theme3" class="navbar-link">个性路线</button>
+        </div>
+    </div>
+    <div id='map'></div>
+    <div class="directions-container" id="directions-container">
+        <div id="mapbox-directions" class="mapbox-directions-container"></div>
+        <div class="directions-button-container">
+            <button id="enable-directions" class="directions-button" disabled>打开路径功能</button>
+            <button id="disable-directions" class="directions-button">关闭路径功能</button>
+        </div>
+    </div>
+    <div class="legend" id="legend">
+        <button data-type="1"><span>景区位置</span><div class="color-circle"></div></button>
+        <button data-type="2"><span>文化展馆</span><div class="color-circle"></div></button>
+        <button data-type="3"><span>餐饮服务</span><div class="color-circle"></div></button>
+        <button data-type="4"><span>大型商超</span><div class="color-circle"></div></button>
+        <button data-type="5"><span>网红街店</span><div class="color-circle"></div></button>
+        <button data-type="6"><span>交通网点</span><div class="color-circle"></div></button>
+        <button data-type="all"><span>显示全部</span></button>
+    </div>
+    </div>
+    <div class="buttonsROAD" id="main-buttons">
+        <div class="button" onclick="showOptions('gulou')">鼓楼</div>
+        <div class="button" onclick="showOptions('xuanwu')">玄武</div>
+        <div class="button" onclick="showOptions('qinhuai')">秦淮</div>
+        <div class="button" onclick="showOptions('jiangning')">江宁</div>
+        <div class="button" onclick="showOptions('pukou')">浦口</div>
+        <div class="button" onclick="showOptions('jianye')">建邺</div>
+
+    </div>
+    <div class="buttonsROAD hidden" id="gulou-options">
+        <div class="button" onclick="showSubOptions('gulou', '文艺')">文艺</div>
+        <div class="button" onclick="showSubOptions('gulou', '综合')">综合</div>
+    </div>
+    <div class="buttonsROAD hidden" id="gulou-suboptions-文艺">
+        <div class="button" onclick="flyToRoute('gulou', '上海路')">上海路</div>
+        <div class="button" onclick="flyToRoute('gulou', '颐和路')">颐和路</div>
+    </div>
+    <div class="buttonsROAD hidden" id="gulou-suboptions-综合">
+        <div class="button" onclick="flyToRoute('gulou', '新街口')">新街口</div>
+
+    </div>
+    <div class="buttonsROAD hidden" id="xuanwu-options">
+        <div class="button" onclick="showSubOptions('xuanwu', '景点')">景点</div>
+        <div class="button" onclick="showSubOptions('xuanwu', '展馆')">展馆</div>
+        <div class="button" onclick="showSubOptions('xuanwu', '逛吃')">逛吃</div>
+    </div>
+    <div class="buttonsROAD hidden" id="xuanwu-suboptions-景点">
+        <div class="button" onclick="flyToRoute('xuanwu', '燕雀湖--梧桐大道')">燕雀湖--梧桐大道</div>
+        <div class="button" onclick="flyToRoute('xuanwu', '紫峰大厦--鸡鸣寺--玄武湖')">紫峰大厦--鸡鸣寺--玄武湖</div>
+    </div>
+    <div class="buttonsROAD hidden" id="xuanwu-suboptions-展馆">
+        <div class="button" onclick="flyToRoute('xuanwu', '大行宫--南京博物馆')">大行宫--南京博物馆</div>
+    </div>
+    <div class="buttonsROAD hidden" id="xuanwu-suboptions-逛吃">
+        <div class="button" onclick="flyToRoute('xuanwu', '1912街区')">1912街区</div>
+        <div class="button" onclick="flyToRoute('xuanwu', '科巷')">科巷</div>
+    
+    </div>
+    <div class="buttonsROAD hidden" id="qinhuai-options">
+        <div class="button" onclick="showSubOptions('qinhuai', '综合')">综合</div>
+        <div class="button" onclick="showSubOptions('qinhuai', '逛吃')">逛吃</div>
+    </div>
+    <div class="buttonsROAD hidden" id="qinhuai-suboptions-综合">
+        <div class="button" onclick="flyToRoute('qinhuai', '夫子庙--熙南里--老门东')">夫子庙--熙南里--老门东</div>    
+    </div>
+    <div class="buttonsROAD hidden" id="qinhuai-suboptions-逛吃">
+        <div class="button" onclick="flyToRoute('qinhuai', '张府园--大香炉')">张府园--大香炉</div>
+        <div class="button" onclick="flyToRoute('qinhuai', '老门西--水西门')">老门西--水西门</div>
+
+    </div>
+    <div class="buttonsROAD hidden" id="pukou-options">
+        <div class="button" onclick="showSubOptions('pukou', '景点')">景点</div>
+    </div>
+    <div class="buttonsROAD hidden" id="pukou-suboptions-景点">
+        <div class="button" onclick="flyToRoute('pukou', '滨江风光')">滨江风光</div>    
+    
+    </div>
+    <div class="buttonsROAD hidden" id="jiangning-options">
+        <div class="button" onclick="showSubOptions('jiangning', '景点')">景点</div>
+        <div class="button" onclick="showSubOptions('jiangning', '综合')">综合</div>
+    </div>
+    <div class="buttonsROAD hidden" id="jiangning-suboptions-景点">
+        <div class="button" onclick="flyToRoute('jiangning', '汤山佘村')">汤山佘村</div>
+    </div>
+    <div class="buttonsROAD hidden" id="jiangning-suboptions-综合">
+        <div class="button" onclick="flyToRoute('jiangning', '百家湖')">百家湖</div>
+    </div>
+    <div class="buttonsROAD hidden" id="jianye-options">
+        <div class="button" onclick="showSubOptions('jianye', '展馆')">展馆</div>
+    </div>
+    <div class="buttonsROAD hidden" id="jianye-suboptions-展馆">
+        <div class="button" onclick="flyToRoute('pukou', '侵华日军南京大屠杀遇难同胞纪念馆--绿博园')">侵华日军南京大屠杀遇难同胞纪念馆--绿博园</div>    
+    </div>
+    <script src="https://api.mapbox.com/mapbox-gl-js/v3.3.0/mapbox-gl.js"></script>
+    <script src="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-directions/v4.1.1/mapbox-gl-directions.js"></script>
+    <script src="地图网页功能.js"></script>
+</body>
+</html>
